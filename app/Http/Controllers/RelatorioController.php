@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use App\Services\FinanceService;
 
 class RelatorioController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
 
     protected $FinanceService;
 

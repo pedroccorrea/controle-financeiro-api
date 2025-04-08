@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Cartao;
 use App\Http\Requests\StoreCartaoRequest;
 use App\Http\Requests\UpdateCartaoRequest;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 
 class CartaoController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
     
     public function __construct(protected Cartao $recurso)
     {

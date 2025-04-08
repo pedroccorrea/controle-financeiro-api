@@ -6,13 +6,13 @@ use App\Models\GastoDiario;
 use App\Models\TransacaoCartao;
 use App\Http\Requests\StoreGastoDiarioRequest;
 use App\Http\Requests\UpdateGastoDiarioRequest;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class GastoDiarioController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
     
     public function __construct(protected GastoDiario $recurso)
     {

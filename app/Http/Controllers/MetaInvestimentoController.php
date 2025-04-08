@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMetaInvestimentoRequest;
 use App\Http\Requests\UpdateMetaInvestimentoRequest;
 use App\Models\MetaInvestimento;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 
 class MetaInvestimentoController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
 
     public function __construct(protected MetaInvestimento $recurso) 
     {

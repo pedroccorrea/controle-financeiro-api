@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\ContribuicaoMeta;
 use App\Http\Requests\StoreContribuicaoMetaRequest;
 use App\Http\Requests\UpdateContribuicaoMetaRequest;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 
 class ContribuicaoMetaController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
 
     public function __construct(protected ContribuicaoMeta $recurso)
     {

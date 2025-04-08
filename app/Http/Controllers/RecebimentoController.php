@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Recebimento;
 use App\Http\Requests\StoreRecebimentoRequest;
 use App\Http\Requests\UpdateRecebimentoRequest;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 
 class RecebimentoController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
     
     public function __construct(protected Recebimento $recurso)
     {

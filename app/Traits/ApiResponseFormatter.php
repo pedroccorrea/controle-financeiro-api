@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait apiResponseFormatter
+trait ApiResponseFormatter
 {
     public function formatResponse($data, $message = null, $status = 200) {
         {

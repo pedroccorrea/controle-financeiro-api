@@ -2,13 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
 class MetaInvestimentoBaseRequest extends FormRequest
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
     
     public function authorize(): bool
     {

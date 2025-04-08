@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Categoria;
 use App\Http\Requests\StoreCategoriaRequest;
 use App\Http\Requests\UpdateCategoriaRequest;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
 
     public function __construct(protected Categoria $recurso) 
     {

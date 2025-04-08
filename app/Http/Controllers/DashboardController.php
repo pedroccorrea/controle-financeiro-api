@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
 
     public function index()
     {

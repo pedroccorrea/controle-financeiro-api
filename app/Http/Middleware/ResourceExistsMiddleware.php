@@ -2,14 +2,14 @@
 
 namespace App\Http\Middleware;
 
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ResourceExistsMiddleware
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
     /**
      * Handle an incoming request.
      *

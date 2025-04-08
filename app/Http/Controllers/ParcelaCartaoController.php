@@ -5,12 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\ParcelaCartao;
 use App\Http\Requests\StoreParcelaCartaoRequest;
 use App\Http\Requests\UpdateParcelaCartaoRequest;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 
 class ParcelaCartaoController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
     
     public function __construct(protected ParcelaCartao $recurso)
     {

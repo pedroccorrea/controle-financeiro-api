@@ -6,12 +6,12 @@ use App\Models\TransacaoCartao;
 use App\Http\Requests\StoreTransacaoCartaoRequest;
 use App\Http\Requests\UpdateTransacaoCartaoRequest;
 use App\Models\ParcelaCartao;
-use App\Traits\apiResponseFormatter;
+use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 
 class TransacaoCartaoController extends Controller
 {
-    use apiResponseFormatter;
+    use ApiResponseFormatter;
     
     public function __construct(protected TransacaoCartao $recurso)
     {
