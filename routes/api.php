@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/recorrente', [GastoRecorrenteController::class, 'index']);
     Route::post('/recorrente', [GastoRecorrenteController::class, 'store']);
     
+    
     Route::get('/meta_investimento', [MetaInvestimentoController::class, 'index']);
     Route::post('/meta_investimento', [MetaInvestimentoController::class, 'store']);
     
