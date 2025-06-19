@@ -19,10 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
-Route::get('/teste', function () {
-    return response()->json(['mensagem' => 'API funcionando, Pedro!']);
-});
-
 
 Route::middleware('auth:api')->group(function () {
     Route::get('me', [AuthController::class, 'me']);

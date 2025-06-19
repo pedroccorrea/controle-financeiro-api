@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCategoriaRequest;
 use App\Http\Requests\UpdateCategoriaRequest;
 use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CategoriaController extends Controller
 {
@@ -19,16 +20,18 @@ class CategoriaController extends Controller
 
     public function index(Request $request)
     {
-        if($request->filled('incluir_soma_gastos')) {{
-            $categorias = $this->recurso->with('gastos')->get()->map(function($categoria) {
+        $userId = Auth::id();
+
+        if($request->filled('incluir_soma_gastos')) {
+            $categorias = $this->recurso->where('user_id', $userId)->with('gastos')->get()->map(function($categoria) {
                 return [
                     'id' => $categoria->id,
                     'nome' => $categoria->nome,
                     'valor' => $categoria->gastos->sum('valor')
                 ];
             });
-        }} else {
-            $categorias = $this->recurso->get();
+        } else {
+            $categorias = $this->recurso->where('user_id', $userId)->get();
         }
 
         return $this->formatResponse($categorias, 'Lista de categorias recuperada com sucesso.');
@@ -36,7 +39,9 @@ class CategoriaController extends Controller
 
     public function store(StoreCategoriaRequest $request)
     {
-        $recurso = $this->recurso->create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        $recurso = $this->recurso->create($data);
 
         return $this->formatResponse($recurso, 'Categoria registrada com sucesso', 201);
     }

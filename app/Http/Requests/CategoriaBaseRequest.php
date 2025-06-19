@@ -18,7 +18,6 @@ class CategoriaBaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'nome' => 'required'
         ];
     }
