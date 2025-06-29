@@ -2,20 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGastoDiarioRequest;
 use App\Models\TransacaoCartao;
 use App\Http\Requests\StoreTransacaoCartaoRequest;
 use App\Http\Requests\UpdateTransacaoCartaoRequest;
-use App\Models\ParcelaCartao;
+use App\Models\GastoDiario;
 use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Services\TransacaoCartaoService;
 
 class TransacaoCartaoController extends Controller
 {
     use ApiResponseFormatter;
+    protected GastoDiario $gastoDiario;
     
-    public function __construct(protected TransacaoCartao $recurso)
+    public function __construct(protected TransacaoCartao $recurso,  protected TransacaoCartaoService $transacaoCartaoService, GastoDiario $gastoDiario)
     {
         $this->recurso = $recurso;
+        $this->gastoDiario = $gastoDiario;
     }
 
     public function index()
@@ -24,30 +29,21 @@ class TransacaoCartaoController extends Controller
         return $this->formatResponse($recurso, 'Lista de transações recuperada com sucesso.');
     }
 
-    public function store(StoreTransacaoCartaoRequest $request)
+    public function store(StoreTransacaoCartaoRequest $request, StoreGastoDiarioRequest $gastoDiarioRequest)
     {
-        $recurso = $this->recurso->create($request->validated());
-        $qtdParcelas = $recurso->quantidade_parcelas;
-        $dataVencimento = date('Y-m-6');
+        $dadosTransacao = $request->validated();
+        $dadosTransacao['user_id'] = Auth::id();
+
+        $transacao = $this->transacaoCartaoService->criarTransacao($dadosTransacao);
+
+        $dadosGastoDiario = $gastoDiarioRequest->validated();
+        $dadosGastoDiario['transacao_cartao_id'] = $transacao->id;
+        $dadosGastoDiario['user_id'] = Auth::id();
+        $dadosGastoDiario['data'] = date('Y-m-d', strtotime($transacao->created_at));
         
-        if(date('d') < 6) {
-            $vencimento = $dataVencimento;
-        } else {
-            $vencimento = date('Y-m-d', strtotime('+1 month', strtotime($dataVencimento)));
-        }
-        if($qtdParcelas >= 1) {
-            $valorParcela = round($recurso->valor / $qtdParcelas, 2);
-            for ($i=0; $i < $qtdParcelas; $i++) { 
-                ParcelaCartao::create([
-                    'transacao_cartao_id' => $recurso->id,
-                    'valor' => $valorParcela,
-                    'data_vencimento' => date('Y-m-d', strtotime("+$i month", strtotime($vencimento))),
-                    'numero_parcela' => $i+1,
-                    'status' => false
-                ]);
-            }
-        }
-        return $this->formatResponse($recurso, 'Transação registrada com sucesso.', 201);
+        $gastoDiario = $this->gastoDiario->create($dadosGastoDiario);
+
+        return $this->formatResponse($gastoDiario, 'Transação registrada com sucesso.', 201);
     }
 
     public function show(Request $request)

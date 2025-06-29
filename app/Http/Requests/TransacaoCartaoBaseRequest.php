@@ -18,12 +18,10 @@ class TransacaoCartaoBaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'cartao_id' => 'required|exists:cartoes,id',
             'tipo' => 'required|in:1,2',
             'valor' => 'required|numeric|decimal:0,2|min:0.01',
             'quantidade_parcelas' => 'integer',
-            'data' => 'required|date'
         ];
     }
 

@@ -18,10 +18,9 @@ class GastoDiarioBaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required',
             'nome' => 'required|min:3',
             'categoria_id' => 'required|exists:categorias,id',
-            'transacao_cartao_id' => 'required|exists:transacao_cartoes,id',
+            // 'transacao_cartao_id' => 'required|exists:transacao_cartoes,id',
             'valor' => 'required|numeric|decimal:0,2|min:0.01'
         ];
     }
