@@ -18,7 +18,6 @@ class RecebimentoBaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required',
             'nome' => 'required|min:3',
             'valor' => 'required|numeric|decimal:0,2|min:0.01'
         ];

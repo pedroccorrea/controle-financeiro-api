@@ -18,7 +18,6 @@ class CartaoBaseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
             'nome' => 'required',
             'limite' => 'required|numeric|decimal:0,2|min:0.01',
             'data_vencimento' => 'required|date_format:Y-m-d',

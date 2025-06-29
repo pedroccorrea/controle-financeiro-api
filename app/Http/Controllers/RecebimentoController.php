@@ -7,6 +7,7 @@ use App\Http\Requests\StoreRecebimentoRequest;
 use App\Http\Requests\UpdateRecebimentoRequest;
 use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RecebimentoController extends Controller
 {
@@ -32,7 +33,9 @@ class RecebimentoController extends Controller
 
     public function store(StoreRecebimentoRequest $request)
     {
-        $recurso = $this->recurso->create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        $recurso = $this->recurso->create($data);
 
         return $this->formatResponse($recurso, 'Recebimento registrado com sucesso', 201);
     }

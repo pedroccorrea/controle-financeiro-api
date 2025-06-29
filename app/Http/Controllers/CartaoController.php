@@ -7,6 +7,7 @@ use App\Http\Requests\StoreCartaoRequest;
 use App\Http\Requests\UpdateCartaoRequest;
 use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartaoController extends Controller
 {
@@ -19,13 +20,17 @@ class CartaoController extends Controller
 
     public function index()
     {
-        $recurso = $this->recurso->with('transacoes')->get();
+        $userId = Auth::id();
+        $recurso = $this->recurso->where('user_id', $userId)->with('transacoes')->get();
         return $this->formatResponse($recurso, 'Lista de cartões recuperada com sucesso.');
     }
 
     public function store(StoreCartaoRequest $request)
     {
-        $recurso = $this->recurso->create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        $recurso = $this->recurso->create($data);
+        
         return $this->formatResponse($recurso, 'Cartão registrado com sucesso.', 201);
     }
 
