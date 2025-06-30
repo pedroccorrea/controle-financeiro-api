@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreGastoRecorrenteRequest;
 use App\Models\GastoRecorrente;
 use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GastoRecorrenteController extends Controller
 {
@@ -29,10 +31,11 @@ class GastoRecorrenteController extends Controller
         return $this->formatResponse($recurso, 'Lista de gastos recuperada com sucesso.');
     }
 
-    public function store(Request $request)
+    public function store(StoreGastoRecorrenteRequest $request)
     {
-        $request->validate($this->gastoRecorrente->rules(), $this->gastoRecorrente->feedback());
-        $gastoRecorrente = $this->gastoRecorrente->create($request->all());
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        $gastoRecorrente = $this->gastoRecorrente->create($data);
 
         return $this->formatResponse($gastoRecorrente, 'Gasto registrado com sucesso', 201);
     }
