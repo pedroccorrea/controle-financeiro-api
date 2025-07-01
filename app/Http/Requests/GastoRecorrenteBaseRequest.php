@@ -20,7 +20,7 @@ class GastoRecorrenteBaseRequest extends FormRequest
         return [
             'nome' => 'required|min:3',
             'valor' => 'required|numeric|decimal:0,2|min:0.01',
-            'data_vencimento' => 'required|date_format:Y-m-d',
+            'data_vencimento' => 'required|numeric|integer',
         ];
     }
 
@@ -30,7 +30,6 @@ class GastoRecorrenteBaseRequest extends FormRequest
             'valor.decimal' => 'O campo valor deve ser um número com no máximo 2 casas decimais.',
             'valor.numeric' => 'O capo valor deve ser um número válido.',
             'valor.min' => 'O capo valor não pode ser zerado.',
-            'date_format' => 'O campo :attribute deve ser uma data válida no formato Y-m-d.',
         ];
     }
     
