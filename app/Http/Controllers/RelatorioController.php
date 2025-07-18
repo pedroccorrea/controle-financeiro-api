@@ -33,4 +33,9 @@ class RelatorioController extends Controller
         $extrato = $this->financeService->extrato();
         return $this->formatResponse($extrato, 'Totalizadores recuperados com sucesso.');
     }
+
+    public function saldo() {
+        $saldo = $this->financeService->saldo();
+        return $this->formatResponse($saldo, 'Saldo recuperado com sucesso.');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Recebimento;
 use App\Http\Requests\StoreRecebimentoRequest;
 use App\Http\Requests\UpdateRecebimentoRequest;
+use App\Services\CacheService;
 use App\Traits\ApiResponseFormatter;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,24 +16,25 @@ class RecebimentoController extends Controller
 {
     use ApiResponseFormatter;
     
-    public function __construct(protected Recebimento $recurso)
+    public function __construct(protected Recebimento $recurso, protected CacheService $cacheService)
     {
         $this->recurso = $recurso;
+        $this->cacheService = $cacheService;
     }
-    public function index(Request $request)
-    {
+
+    private function getRecebimentos() {
         $userId = Auth::id();
-
-        if (Cache::has("recebimento_usuario_{$userId}")) {
-            Log::info("Cache já existe para o usuário {$userId}");
-        } else {
-            Log::info("Cache não existe para o usuário {$userId}, executando consulta no banco.");
-        }
-
-        return $entradas = Cache::remember("recebimento_usuario_{$userId}", 2592000, function () use ($userId) {
-             Log::info("Consultando banco de dados para o usuário {$userId}");
+        return Cache::remember("recebimento_usuario_{$userId}", 2592000, function () use ($userId) {
             return \App\Models\Recebimento::where('user_id', $userId)->get();
         });
+    }
+    
+    public function index(Request $request)
+    {
+        $entradas = $this->cacheService->getOrSetRecebimentos();
+
+        return $this->formatResponse($entradas, 'Lista de recebimentos recuperada com sucesso.');
+
         // $porPagina = $request->get('por_pagina', 15);
         // $query = $this->recurso->newQuery();
         // if($request->filled('data_inicio')) {
@@ -42,7 +44,14 @@ class RecebimentoController extends Controller
         //     $query->where('created_at', '<=', $request->get('data_fim'));
         // }
         // $recurso = $query->paginate($porPagina);
-        // return $this->formatResponse($recurso, 'Lista de recebimentos recuperada com sucesso.');
+    }
+
+    public function total(Request $request) {
+        $entradas = $this->cacheService->getOrSetRecebimentos();
+
+        $total = $entradas->sum('valor');
+
+        return $this->formatResponse($total, 'Total de recebimentos recuperado com sucesso.');
     }
 
     public function store(StoreRecebimentoRequest $request)
@@ -51,7 +60,7 @@ class RecebimentoController extends Controller
         $data['user_id'] = Auth::id();
         $recurso = $this->recurso->create($data);
 
-        Cache::forget("recebimento_usuario_{$data['user_id']}");
+        $this->cacheService->clearRecebimentos();
 
         return $this->formatResponse($recurso, 'Recebimento registrado com sucesso', 201);
     }
@@ -66,6 +75,9 @@ class RecebimentoController extends Controller
         $recurso = $request->resource;
         $recurso->fill($request->validated());
         $recurso->save();
+
+        $this->cacheService->clearRecebimentos();
+
         return $this->formatResponse($recurso, 'Recebimento atualizado com sucesso'); 
     }
 
@@ -73,6 +85,9 @@ class RecebimentoController extends Controller
     {
         $recurso = $request->resource;
         $recurso->delete();
+
+        $this->cacheService->clearRecebimentos();
+
         return $this->formatResponse(null, 'Recebimento deletado com sucesso.');
     }
 }

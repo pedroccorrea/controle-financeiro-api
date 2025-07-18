@@ -26,18 +26,22 @@ Route::middleware('auth:api')->group(function () {
     Route::post('refresh', [AuthController::class, 'refresh']);
 
     Route::get('/recorrente', [GastoRecorrenteController::class, 'index']);
+     Route::get('/recorrente/total', [GastoRecorrenteController::class, 'total']);
     Route::post('/recorrente', [GastoRecorrenteController::class, 'store']);
     
     Route::get('/meta_investimento', [MetaInvestimentoController::class, 'index']);
     Route::post('/meta_investimento', [MetaInvestimentoController::class, 'store']);
     
     Route::get('/gasto_diario', [GastoDiarioController::class, 'index']);
+    Route::get('/gasto_diario/total', [GastoDiarioController::class, 'total']);
     Route::post('/gasto_diario', [GastoDiarioController::class, 'store']);
     
     Route::get('/recebimento', [RecebimentoController::class, 'index']);
+    Route::get('/recebimento/total', [RecebimentoController::class, 'total']);
     Route::post('/recebimento', [RecebimentoController::class, 'store']);
     
     Route::get('/contribuicao_meta', [ContribuicaoMetaController::class, 'index']);
+    Route::get('/contribuicao_meta/total', [ContribuicaoMetaController::class, 'total']);
     Route::post('/contribuicao_meta', [ContribuicaoMetaController::class, 'store']);
     
     Route::get('/transacao_cartao', [TransacaoCartaoController::class, 'index']);
@@ -55,6 +59,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     
     Route::get('/relatorios/gastos-por-mes', [RelatorioController::class, 'gastosPorMes']);
+
+    Route::get('/relatorios/saldo', [RelatorioController::class, 'saldo']);
     
     Route::get('/relatorios/gastos-por-categoria', [RelatorioController::class, 'gastosPorCategoria']);
     
